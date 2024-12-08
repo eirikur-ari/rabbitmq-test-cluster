@@ -2,78 +2,63 @@ services:
 
 ###################  RabbitMQ Cluster ###################
   rabbitmq-1:
-    image: rabbitmq:3.13.6-management
+    extends:
+      file: rabbitmq.yaml
+      service: rabbitmq
     hostname: rabbitmq-1
-    environment:
-      - RABBITMQ_DEFAULT_USER=guest
-      - RABBITMQ_DEFAULT_PASS=guest
-      - RABBITMQ_DEFAULT_VHOST=/
     volumes:
-      - ./files/rabbitmq/.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie
-      - ./files/rabbitmq/cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
-      - ./files/rabbitmq/rabbit_enabled_plugins:/etc/rabbitmq/enabled_plugins
-      - ./files/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
       - rabbitmq-1-data:/var/lib/rabbitmq/
       - rabbitmq-1-logs:/var/log/rabbitmq
-    entrypoint: /usr/local/bin/cluster-entrypoint.sh
     networks:
       - rabbitmq
 
   rabbitmq-2:
-    image: rabbitmq:3.13.6-management
+    extends:
+      file: rabbitmq.yaml
+      service: rabbitmq
     hostname: rabbitmq-2
     depends_on:
       - rabbitmq-1
     environment:
       - JOIN_CLUSTER_HOST=rabbitmq-1
     volumes:
-      - ./files/rabbitmq/.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie
-      - ./files/rabbitmq/cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
-      - ./files/rabbitmq/rabbit_enabled_plugins:/etc/rabbitmq/enabled_plugins
-      - ./files/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
       - rabbitmq-2-data:/var/lib/rabbitmq/
       - rabbitmq-2-logs:/var/log/rabbitmq
-    entrypoint: /usr/local/bin/cluster-entrypoint.sh
     networks:
       - rabbitmq
 
   rabbitmq-3:
-    image: rabbitmq:3.13.6-management
+    extends:
+      file: rabbitmq.yaml
+      service: rabbitmq
     hostname: rabbitmq-3
     depends_on:
       - rabbitmq-1
     environment:
       - JOIN_CLUSTER_HOST=rabbitmq-1
     volumes:
-      - ./files/rabbitmq/.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie
-      - ./files/rabbitmq/cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh
-      - ./files/rabbitmq/rabbit_enabled_plugins:/etc/rabbitmq/enabled_plugins
-      - ./files/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
       - rabbitmq-3-data:/var/lib/rabbitmq/
       - rabbitmq-3-logs:/var/log/rabbitmq
-    entrypoint: /usr/local/bin/cluster-entrypoint.sh
     networks:
       - rabbitmq
 
 ################### Monitoring ###################
   grafana:
-    image: grafana/grafana:11.4.0
+    extends:
+      file: monitoring.yaml
+      service: grafana
     networks:
       - "rabbitmq"
-    volumes:      
-      - ./files/grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/rabbitmq.yaml
-      - ./files/grafana/datasources.yml:/etc/grafana/provisioning/datasources/prometheus.yaml
-      - ./files/grafana/dashboards:/dashboards
+    volumes:          
       - grafana-data:/var/lib/grafana
-    environment:
-      GF_INSTALL_PLUGINS: "flant-statusmap-panel,grafana-piechart-panel"
 
   prometheus:
-    image: prom/prometheus:v3.0.1
+    extends:
+      file: monitoring.yaml
+      service: prometheus
     networks:
       - "rabbitmq"
     volumes:
-      - ./files/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
 
 ################### Proxy ###################

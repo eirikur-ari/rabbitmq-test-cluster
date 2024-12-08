@@ -26,7 +26,14 @@ scrape_configs:
     static_configs:
       - targets:
          - 'haproxy:15692'
-  - job_name: 'perf-test'
+  - job_name: 'rabbitmq-cluster-detailed'
+    metrics_path: "/metrics/detailed"
+    params:
+      family: ["queue_coarse_metrics"]
     static_configs:
       - targets:
-          - 'perf-test:8080'
+        - 'haproxy:15692'
+#  - job_name: 'perf-test'
+#    static_configs:
+#      - targets:
+#          - 'perf-test:8080'
