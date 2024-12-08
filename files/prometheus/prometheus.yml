@@ -29,7 +29,12 @@ scrape_configs:
   - job_name: 'rabbitmq-cluster-detailed'
     metrics_path: "/metrics/detailed"
     params:
-      family: ["queue_coarse_metrics"]
+      family: ["queue_coarse_metrics", "queue_consumer_count", "channel_queue_metrics", "channel_queue_exchange_metrics", "channel_metrics", "connection_metrics", "connection_coarse_metrics", "channel_exchange_metrics"]
+    static_configs:
+      - targets:
+        - 'haproxy:15692'
+  - job_name: 'rabbitmq-cluster-per-object'
+    metrics_path: "/metrics/per-object"
     static_configs:
       - targets:
         - 'haproxy:15692'
