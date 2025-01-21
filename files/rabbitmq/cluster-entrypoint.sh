@@ -3,7 +3,7 @@
 set -e
 
 # Change .erlang.cookie permission
-chmod 400 /var/lib/rabbitmq/.erlang.cookie
+#chmod 400 /var/lib/rabbitmq/.erlang.cookie
 
 # Get hostname from enviromant variable
 HOSTNAME=`env hostname`
