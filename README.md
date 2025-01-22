@@ -1,4 +1,4 @@
-# RabbitMQ Cluster & Monitoring
+# RabbitMQ Test Cluster
 My test setup for trying out various things using tools like [rabbitmq-perf-test](https://github.com/rabbitmq/rabbitmq-perf-test)
 
 ## Components
