@@ -1,8 +1,5 @@
 # VS Code
 .vscode/
 
-# Erlang/OTP unwanted files.
-files/rabbitmq/.erlang.cookie
-
 # Other
 *.swp
