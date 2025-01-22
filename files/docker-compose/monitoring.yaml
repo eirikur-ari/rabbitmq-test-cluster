@@ -1,0 +1,14 @@
+services:
+  grafana:
+    image: grafana/grafana:11.4.0
+    volumes:      
+      - ../grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/rabbitmq.yaml
+      - ../grafana/datasources.yml:/etc/grafana/provisioning/datasources/prometheus.yaml
+      - ../grafana/dashboards:/dashboards
+    environment:
+      GF_INSTALL_PLUGINS: "flant-statusmap-panel,grafana-piechart-panel"
+
+  prometheus:
+    image: prom/prometheus:v3.0.1
+    volumes:
+      - ../prometheus/prometheus.yml:/etc/prometheus/prometheus.yml

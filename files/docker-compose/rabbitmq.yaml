@@ -1,0 +1,14 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3.13.6-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_VHOST=/
+      - RABBITMQ_ERLANG_COOKIE=rabbitmq-test-cluster
+      - RABBITMQ_LOG=debug,+color
+    volumes:
+      - ../rabbitmq/cluster-entrypoint.sh:/usr/local/bin/cluster-entrypoint.sh:ro
+      - ../rabbitmq/rabbit_enabled_plugins:/etc/rabbitmq/enabled_plugins:ro
+      - ../rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+    entrypoint: /usr/local/bin/cluster-entrypoint.sh

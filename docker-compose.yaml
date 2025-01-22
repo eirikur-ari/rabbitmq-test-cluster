@@ -3,7 +3,7 @@ services:
 ###################  RabbitMQ Cluster ###################
   rabbitmq-1:
     extends:
-      file: rabbitmq.yaml
+      file: files/docker-compose/rabbitmq.yaml
       service: rabbitmq
     hostname: rabbitmq-1
     volumes:
@@ -14,7 +14,7 @@ services:
 
   rabbitmq-2:
     extends:
-      file: rabbitmq.yaml
+      file: files/docker-compose/rabbitmq.yaml
       service: rabbitmq
     hostname: rabbitmq-2
     depends_on:
@@ -29,7 +29,7 @@ services:
 
   rabbitmq-3:
     extends:
-      file: rabbitmq.yaml
+      file: files/docker-compose/rabbitmq.yaml
       service: rabbitmq
     hostname: rabbitmq-3
     depends_on:
@@ -45,7 +45,7 @@ services:
 ################### Monitoring ###################
   grafana:
     extends:
-      file: monitoring.yaml
+      file: files/docker-compose/monitoring.yaml
       service: grafana
     networks:
       - "rabbitmq"
@@ -54,7 +54,7 @@ services:
 
   prometheus:
     extends:
-      file: monitoring.yaml
+      file: files/docker-compose/monitoring.yaml
       service: prometheus
     networks:
       - "rabbitmq"
