@@ -80,7 +80,9 @@ services:
       - 3000:3000
       - 9090:9090
     networks:
-      - rabbitmq
+      rabbitmq:
+        aliases:
+          - rabbitmq-cluster
 
 networks:
   rabbitmq:
